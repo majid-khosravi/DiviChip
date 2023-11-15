@@ -97,7 +97,7 @@ fun MainScreen() {
             Arrangement.SpaceBetween
         ) {
             val playersCount = remember {
-                mutableStateOf(1)
+                mutableStateOf(5)
             }
 
             ButtonsCard {
@@ -184,10 +184,10 @@ fun ChipListItems(playersCount: Int) {
     val blueRemained = BLUE_CHIPS_COUNT % (playersCount)
     val greenRemained = GREEN_CHIPS_COUNT % (playersCount)
     val yellowRemained = YELLOW_CHIPS_COUNT % (playersCount)
-    ChipListItem("100$", Color.Red, Color.White, red, redRemained)
-    ChipListItem("50 $", Color.Blue, Color.White, blue, blueRemained)
-    ChipListItem("25 $", Color.Green, Color.Black, green, greenRemained)
-    ChipListItem("10 $", Color.Yellow, Color.Black, yellow, yellowRemained)
+    ChipListItem("100$", Color.Red, Color.White, red, redRemained, playersCount)
+    ChipListItem("50 $", Color.Blue, Color.White, blue, blueRemained, playersCount)
+    ChipListItem("25 $", Color.Green, Color.Black, green, greenRemained, playersCount)
+    ChipListItem("10 $", Color.Yellow, Color.Black, yellow, yellowRemained, playersCount)
 }
 
 @Composable
@@ -320,7 +320,8 @@ fun ChipListItem(
     color: Color,
     textColor: Color,
     count: Int,
-    remained: Int
+    remained: Int,
+    total: Int
 ) {
     Column {
         ListItem(
@@ -335,7 +336,8 @@ fun ChipListItem(
                 CircleShape(
                     text = value,
                     color = color,
-                    textColor = textColor
+                    textColor = textColor,
+                    count = total
                 )
             },
         )
@@ -398,15 +400,42 @@ fun ConstraintLayoutContent() {
 fun CircleShape(
     color: Color,
     textColor: Color, text: String,
-    fontSize: TextUnit = 15.sp
+    count: Int = 6,
+    fontSize: TextUnit = 11.sp
 ) {
     Box(modifier = Modifier.padding(8.dp)) {
         Canvas(modifier = Modifier.size(50.dp), onDraw = {
             val size = 48.dp.toPx()
             drawCircle(
                 color = color,
-                radius = size / 2f
+                radius = (size / 2f) + 4
             )
+
+            for (i in 0..count) {
+                drawArc(
+                    textColor,
+                    startAngle = i * (360f / count),
+                    sweepAngle = (360f / count) / 4,
+                    useCenter = true
+                )
+
+            }
+
+            drawCircle(
+                color = color,
+                radius = size / 2f - 6
+            )
+
+            drawCircle(
+                color = textColor,
+                radius = size / 2f - 12
+            )
+
+            drawCircle(
+                color = color,
+                radius = size / 2f - 14
+            )
+
         })
         Text(
             text = text,
@@ -415,7 +444,7 @@ fun CircleShape(
                 .align(Alignment.Center),
             style = TextStyle(
                 color = textColor,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center,
                 fontSize = fontSize
             )
@@ -501,7 +530,7 @@ fun Input(callback: (Int) -> Unit) {
 
 @Composable
 fun ControllerButtons(callback: (Int) -> Unit) {
-    val text = remember { mutableStateOf(1) }
+    val text = remember { mutableStateOf(5) }
 
     Row(
         modifier = Modifier
