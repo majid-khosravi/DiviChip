@@ -109,8 +109,9 @@ fun MainScreen() {
 
 
             Column(
-                modifier = Modifier.fillMaxWidth()
-                    .weight(weight =1f, fill = true),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(weight = 1f, fill = true),
                 Arrangement.Bottom,
                 Alignment.CenterHorizontally
             ) {
@@ -135,12 +136,12 @@ fun ChipsTable(playersCount: Int) {
         border = BorderStroke(4.dp, Color.Black),
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth()
     ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .weight(weight =1f, fill = false)) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1f, fill = false)
+        ) {
 
 //            .verticalScroll(rememberScrollState())
             ChipListItems(playersCount)
