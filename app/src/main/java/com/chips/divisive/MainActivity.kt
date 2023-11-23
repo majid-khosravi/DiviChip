@@ -174,7 +174,6 @@ fun ChipRows(playersCount: Int) {
 
 @Composable
 fun ChipListItems(playersCount: Int) {
-
     val red = RED_CHIPS_COUNT.div(playersCount)
     val blue = BLUE_CHIPS_COUNT.div(playersCount)
     val green = GREEN_CHIPS_COUNT.div(playersCount)
@@ -211,10 +210,7 @@ fun ChipsRow(playersCount: Int) {
             Chip("25", Color.Green, Color.Black, green, greenRemained)
             Chip("10", Color.Yellow, Color.Black, yellow, yellowRemained)
         }
-
     }
-
-
 }
 
 
