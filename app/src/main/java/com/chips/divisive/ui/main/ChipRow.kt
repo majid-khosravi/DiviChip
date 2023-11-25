@@ -16,25 +16,34 @@ import com.chips.divisive.model.ChipModel
 
 
 @Composable
-fun ProfileChipRow(item: ChipModel, isEditable: Boolean = false) {
+fun ChipList(
+    items: List<ChipModel>?,
+    callback: ((profileId: Int) -> Unit)? = null
+) {
+    Column(modifier = Modifier.padding(8.dp)) {
+        items?.forEach {
+            ProfileChipRow(it, callback)
+        }
+    }
+}
+
+@Composable
+fun ProfileChipRow(
+    item: ChipModel,
+    callback: ((profileId: Int) -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
         Text(modifier = Modifier.weight(1f, true), text = item.value)
-        if (isEditable)
-            IconButton(onClick = { }) {
+        callback?.let {
+            IconButton(onClick = { callback.invoke(item.id) }) {
                 Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
             }
-//        Text(text = item.value , color = Color(item.color.toULong()))
-    }
-}
-@Composable
-fun ChipList(items: List<ChipModel>?, isEditable: Boolean) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        items?.forEach {
-            ProfileChipRow(it, isEditable = isEditable)
         }
+
+//        Text(text = item.value , color = Color(item.color.toULong()))
     }
 }

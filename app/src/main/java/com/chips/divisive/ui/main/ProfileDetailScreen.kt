@@ -1,19 +1,22 @@
 package com.chips.divisive.ui.main
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,31 +26,31 @@ import com.chips.divisive.model.ProfileWithItsChips
 
 @Composable
 fun ProfileDetailScreen(
-    viewModel: ProfileDetailViewModel
+    viewModel: ProfileDetailViewModel,
+    chipIdCallback: (chipId: Int) -> Unit
 ) {
 //    viewModel.findProfileById(n)
     val stat by viewModel.stat.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     if (stat.isLoading) {
         Log.d("TAG", "ProfileListScreen: ${stat.isLoading}")
     } else {
         stat.value?.let {
-            ProfileCard(it)
+            ProfileCardRow(it, chipIdCallback = chipIdCallback)
         }
-        /*ProfileList(stat.value) {
-            callback.invoke(it)
-//            MyToast(context, "Item: $it clicked!")
-        }*/
     }
-
 }
 
 
+
 @Composable
-fun ProfileCard(item: ProfileWithItsChips) {
-    Card(modifier = Modifier
-        .padding(16.dp)
-        .background(Color.Cyan)) {
+fun ProfileCardRow(
+    item: ProfileWithItsChips,
+    profileIdCallback: ((profileId: Int) -> Unit)? = null,
+    chipIdCallback: ((chipId: Int) -> Unit)? = null
+) {
+    Card(modifier = Modifier.padding(16.dp)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,12 +67,19 @@ fun ProfileCard(item: ProfileWithItsChips) {
                     text = item.profile.title,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 26.sp
+                        fontSize = 21.sp
                     )
                 )
-
+                profileIdCallback?.let {
+                    IconButton(onClick = { profileIdCallback.invoke(item.profile.id) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = null
+                        )
+                    }
+                }
             }
-            ProfileCardRow(items = item.chips)
+            ChipList(items = item.chips, chipIdCallback)
         }
     }
 }
