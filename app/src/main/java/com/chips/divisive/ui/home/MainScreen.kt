@@ -374,11 +374,18 @@ fun CircleShape(
     color: Color,
     textColor: Color, text: String,
     count: Int = 6,
-    fontSize: TextUnit = 11.sp
+    shapeSize: Dp = 50.dp,
+    fontSize: TextUnit = 11.sp,
+    onClick: (() -> Unit)? = null
 ) {
-    Box(modifier = Modifier.padding(8.dp)) {
-        Canvas(modifier = Modifier.size(50.dp), onDraw = {
-            val size = 48.dp.toPx()
+    Box(
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+        Canvas(modifier = Modifier
+            .size(shapeSize)
+            .clickable { onClick?.invoke() }, onDraw = {
+            val size = shapeSize.toPx() - 2
             drawCircle(
                 color = color,
                 radius = (size / 2f) + 4

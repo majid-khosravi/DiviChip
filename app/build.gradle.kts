@@ -73,6 +73,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("com.github.skydoves:colorpicker-compose:1.0.0")
 
 
     // di (hilt)

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,12 +44,12 @@ fun ProfileDetailScreen(
 }
 
 
-
 @Composable
 fun ProfileCardRow(
     item: ProfileWithItsChips,
     profileIdCallback: ((profileId: Int) -> Unit)? = null,
-    chipIdCallback: ((chipId: Int) -> Unit)? = null
+    chipIdCallback: ((chipId: Int) -> Unit)? = null,
+    calculateCallback: ((chipId: Int) -> Unit)? = null
 ) {
     Card(modifier = Modifier.padding(16.dp)) {
         Column(
@@ -80,6 +81,13 @@ fun ProfileCardRow(
                 }
             }
             ChipList(items = item.chips, chipIdCallback)
+            calculateCallback?.let {
+                Button(
+                    onClick = { calculateCallback.invoke(item.profile.id) }
+                ) {
+                    Text(text = "Calculate this")
+                }
+            }
         }
     }
 }

@@ -22,7 +22,8 @@ import com.chips.divisive.model.ProfileWithItsChips
 @Composable
 fun ProfileListScreen(
     viewModel: MainViewModel,
-    callback: (profileId: Int) -> Unit
+    editCallback: (profileId: Int) -> Unit,
+    calculateCallback: ((profileId: Int) -> Unit)
 ) {
     val stat by viewModel.stat.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -30,7 +31,7 @@ fun ProfileListScreen(
     if (stat.isLoading) {
         Log.d("TAG", "ProfileListScreen: ${stat.isLoading}")
     } else {
-        ProfileList(stat.value, callback)
+        ProfileList(stat.value, editCallback = editCallback, calculateCallback = calculateCallback)
     }
 }
 
@@ -40,7 +41,11 @@ fun MyToast(context: Context, message: String) {
 
 
 @Composable
-fun ProfileList(items: List<ProfileWithItsChips>, callback: (profileId: Int) -> Unit) {
+fun ProfileList(
+    items: List<ProfileWithItsChips>,
+    editCallback: (profileId: Int) -> Unit,
+    calculateCallback: ((profileId: Int) -> Unit)? = null
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -50,7 +55,11 @@ fun ProfileList(items: List<ProfileWithItsChips>, callback: (profileId: Int) -> 
     ) {
         items.forEach {
             Row {
-                ProfileCardRow(it, profileIdCallback = callback)
+                ProfileCardRow(
+                    it,
+                    profileIdCallback = editCallback,
+                    calculateCallback = calculateCallback
+                )
             }
         }
     }
