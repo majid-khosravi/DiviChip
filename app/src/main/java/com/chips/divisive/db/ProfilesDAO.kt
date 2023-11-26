@@ -28,11 +28,15 @@ interface ProfilesDAO {
     @Query("SELECT * FROM profile WHERE id LIKE :id LIMIT 1")
     fun findById(id: Int): ProfileWithItsChips?
 
+
+    @Query("SELECT * FROM chipmodel WHERE id LIKE :id LIMIT 1")
+    fun findChipById(id: Int): ChipModel?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProfile(item: Profile)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertChip(item: ChipModel)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertChip(item: ChipModel): Long
 
 
     @Update

@@ -24,6 +24,12 @@ class ProfileLocalDataSource @Inject constructor(private val profilesDAO: Profil
 
     }
 
+    override fun findChipById(id: Int): ChipModel? {
+        return profilesDAO.findChipById(id)
+//        return profilesDAO.getCategoryWithItsQuotes(1)
+
+    }
+
     override fun insertProfile(item: Profile) {
         CoroutineScope(Dispatchers.IO).launch{
             profilesDAO.insertProfile(item)
@@ -31,11 +37,13 @@ class ProfileLocalDataSource @Inject constructor(private val profilesDAO: Profil
 //        profilesDAO.insert(item.chips)
     }
 
-    override fun insertChip(item: ChipModel) {
+    override fun insertChip(item: ChipModel): Long {
 
-        CoroutineScope(Dispatchers.IO).launch{
+      /*  CoroutineScope(Dispatchers.IO).launch{
             profilesDAO.insertChip(item)
-        }
+        }*/
+        return profilesDAO.insertChip(item)
+
 //        profilesDAO.insert(item.chips)
     }
 

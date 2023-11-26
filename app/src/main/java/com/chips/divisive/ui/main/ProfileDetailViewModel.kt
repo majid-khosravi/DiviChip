@@ -3,7 +3,7 @@ package com.chips.divisive.ui.main
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chips.divisive.model.ProfileSDetailState
+import com.chips.divisive.model.ProfilesDetailState
 import com.chips.divisive.repo.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +25,8 @@ class ProfileDetailViewModel @Inject constructor(
     private val profileId: Int =
         savedStateHandle["profileId"] ?: throw IllegalStateException("profileId is required")
 
-    private val _state: MutableStateFlow<ProfileSDetailState> =
-        MutableStateFlow(ProfileSDetailState(isLoading = false))
+    private val _state: MutableStateFlow<ProfilesDetailState> =
+        MutableStateFlow(ProfilesDetailState(isLoading = false))
     val stat = _state.asStateFlow()
 
     init {

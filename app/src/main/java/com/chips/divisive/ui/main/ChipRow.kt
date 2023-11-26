@@ -20,7 +20,7 @@ import com.chips.divisive.model.ChipModel
 @Composable
 fun ChipList(
     items: List<ChipModel>?,
-    callback: ((profileId: Int) -> Unit)? = null
+    callback: ((chip: ChipModel) -> Unit)? = null
 ) {
     Column(modifier = Modifier.padding(8.dp)) {
         items?.forEach {
@@ -32,7 +32,7 @@ fun ChipList(
 @Composable
 fun ProfileChipRow(
     item: ChipModel,
-    callback: ((profileId: Int) -> Unit)? = null
+    callback: ((chip: ChipModel) -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -43,7 +43,7 @@ fun ProfileChipRow(
     ) {
         Text(modifier = Modifier.weight(1f, true), text = item.value)
         callback?.let {
-            IconButton(onClick = { callback.invoke(item.id) }) {
+            IconButton(onClick = { callback.invoke(item) }) {
                 Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
             }
         }

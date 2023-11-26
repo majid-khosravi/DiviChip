@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chips.divisive.ui.home.MainScreen
+import com.chips.divisive.ui.main.dialog.BottomSheet
 import com.chips.divisive.ui.theme.ChipsDivisiveTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,11 +34,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             var showSheet by remember { mutableStateOf(false) }
 
-            if (showSheet) {
-                BottomSheet() {
-                    showSheet = false
-                }
-            }
+
             ChipsDivisiveTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -62,11 +59,27 @@ class MainActivity : ComponentActivity() {
                             }
                         )) {
                             ProfileDetailScreen(hiltViewModel()) {
-                                showSheet = true
+                                navController.navigate("chip/${it.id}/${it.profileId}")
                             }
                         }
                         composable(route = "calc") {
                             MainScreen()
+                        }
+                        composable(route = "chip/{chipId}/{profileId}", arguments = listOf(
+                            navArgument("chipId") {
+                                type = NavType.IntType
+                            },
+                            navArgument("profileId") {
+                                type = NavType.IntType
+                            }
+                        )) { backStackEntry ->
+
+                            val chipId = backStackEntry.arguments?.getInt("chipId")
+                            val profileId = backStackEntry.arguments?.getInt("profileId")
+
+                            BottomSheet(hiltViewModel(), chipId, profileId) {
+                                showSheet = false
+                            }
                         }
                     }
 

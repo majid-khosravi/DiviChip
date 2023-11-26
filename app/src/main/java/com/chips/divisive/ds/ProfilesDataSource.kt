@@ -10,8 +10,9 @@ interface ProfilesDataSource {
     fun findAll(): List<ProfileWithItsChips>
 
     fun findById(id: Int): ProfileWithItsChips?
+    fun findChipById(id: Int): ChipModel?
     fun delete(item: Profile)
     fun update(item: Profile)
-    fun insertChip(item: ChipModel)
+    fun insertChip(item: ChipModel): Long
     fun insertProfile(item: Profile)
 }

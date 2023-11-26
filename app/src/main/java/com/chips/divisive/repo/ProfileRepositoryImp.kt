@@ -24,12 +24,19 @@ class ProfileRepositoryImp @Inject constructor(private val dataSource: ProfileLo
         }
     }
 
+
+    override fun findChipById(id: Int): Flow<ChipModel?> {
+        return flow {
+            emit(dataSource.findChipById(id))
+        }
+    }
+
     override fun insertProfile(item: Profile) {
         return dataSource.insertProfile(item)
     }
 
-    override fun insertChip(item: ChipModel) {
-        return dataSource.insertChip(item)
+    override fun insertChip(item: ChipModel): Flow<Long> {
+        return flow { dataSource.insertChip(item) }
     }
 
     override fun update(item: Profile) {

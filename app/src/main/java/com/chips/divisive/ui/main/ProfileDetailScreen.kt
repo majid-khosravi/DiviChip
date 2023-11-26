@@ -23,12 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.chips.divisive.model.ChipModel
 import com.chips.divisive.model.ProfileWithItsChips
 
 @Composable
 fun ProfileDetailScreen(
     viewModel: ProfileDetailViewModel,
-    chipIdCallback: (chipId: Int) -> Unit
+    chipIdCallback: (chip: ChipModel) -> Unit
 ) {
 //    viewModel.findProfileById(n)
     val stat by viewModel.stat.collectAsStateWithLifecycle()
@@ -48,7 +49,7 @@ fun ProfileDetailScreen(
 fun ProfileCardRow(
     item: ProfileWithItsChips,
     profileIdCallback: ((profileId: Int) -> Unit)? = null,
-    chipIdCallback: ((chipId: Int) -> Unit)? = null,
+    chipIdCallback: ((chip: ChipModel) -> Unit)? = null,
     calculateCallback: ((chipId: Int) -> Unit)? = null
 ) {
     Card(modifier = Modifier.padding(16.dp)) {

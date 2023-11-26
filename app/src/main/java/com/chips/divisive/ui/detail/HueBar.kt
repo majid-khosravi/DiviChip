@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +38,7 @@ fun HueBar(
     setColor: (Float) -> Unit
 ) {
     val scope = rememberCoroutineScope()
+
     val interactionSource = remember {
         MutableInteractionSource()
     }
@@ -46,8 +48,8 @@ fun HueBar(
     Canvas(
         modifier = Modifier
             .height(40.dp)
-            .width(300.dp)
-            .clip(RoundedCornerShape(50))
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(25))
             .emitDragGesture(interactionSource)
     ) {
         val drawScopeSize = size

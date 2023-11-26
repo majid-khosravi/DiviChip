@@ -10,8 +10,10 @@ interface ProfileRepository {
 
     fun findById(id: Int): Flow<ProfileWithItsChips?>
 
+    fun findChipById(id: Int): Flow<ChipModel?>
+
     fun insertProfile(item: Profile)
-    fun insertChip(item: ChipModel)
+    fun insertChip(item: ChipModel): Flow<Long>
 
     fun update(item: Profile)
 
