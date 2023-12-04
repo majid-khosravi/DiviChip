@@ -2,6 +2,8 @@ package com.chips.divisive.ui.main.dialog
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -179,6 +181,10 @@ fun ChipMaker(viewModel: ChipViewModel, chipId: Int?, profileId: Int?, onDismiss
         mutableStateOf(Color.LightGray)
     }
 
+    val selectedFontColor = remember {
+        mutableStateOf(Color.White)
+    }
+
     val chipValue = remember { mutableStateOf("") }
 
     val chipCount = remember { mutableStateOf(1) }
@@ -234,7 +240,7 @@ fun ChipMaker(viewModel: ChipViewModel, chipId: Int?, profileId: Int?, onDismiss
 
             CircleShape(
                 color = selectedColor.value,
-                textColor = Color.White,
+                textColor = selectedFontColor.value,
                 shapeSize = 100.dp,
                 fontSize = 25.sp,
                 text = chipValue.value
@@ -278,14 +284,41 @@ fun ChipMaker(viewModel: ChipViewModel, chipId: Int?, profileId: Int?, onDismiss
         ) {
             Text(text = "Font Color:")
 
-            Canvas(modifier = Modifier.padding(16.dp), onDraw = {
+            Canvas(modifier = Modifier
+                .padding(16.dp)
+                .size(48.dp)
+                .border(1.dp, Color.Magenta)
+                .clickable {
+                    selectedFontColor.value = Color.White
+                }, onDraw = {
                 drawRect(Color.White)
             })
 
-            Canvas(modifier = Modifier.padding(16.dp), onDraw = {
-                drawRect(Color.White)
-            })
+            Canvas(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(48.dp)
+                    .border(1.dp, Color.Magenta)
+                    .clickable {
+                        selectedFontColor.value = Color.Black
+                    },
+                onDraw = {
+                    drawRect(Color.Black)
+                })
 
+            /*  Canvas(
+                  modifier = Modifier
+                      .size(size = 48.dp)
+                      .border(width = 2.dp, color = Color.Magenta)
+              ) {
+                  drawRect(
+                      brush = Brush.horizontalGradient(listOf(Color.Magenta, Color.Yellow)),
+                      size = Size(width = 48.dp.toPx(), height = 48.dp.toPx()),
+                      topLeft = Offset(x = 48.dp.toPx(), y = 48.dp.toPx()),
+                      style = Stroke(width = 6.dp.toPx())
+                  )
+              }
+  */
         }
         Row(
             modifier = Modifier.padding(8.dp),
