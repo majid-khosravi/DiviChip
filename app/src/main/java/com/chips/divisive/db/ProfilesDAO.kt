@@ -36,7 +36,7 @@ interface ProfilesDAO {
     fun insertProfile(item: Profile)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertChip(item: ChipModel): Long
+    fun insertChip(item: ChipModel)
 
 
     @Update

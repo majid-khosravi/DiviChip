@@ -40,9 +40,9 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-//            extracted(1)
-//            extracted(2)
-//            extracted(3)
+            extracted(1)
+            extracted(2)
+            extracted(3)
 
             delay(500)
             findAll()

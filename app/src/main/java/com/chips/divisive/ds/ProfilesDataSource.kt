@@ -13,6 +13,6 @@ interface ProfilesDataSource {
     fun findChipById(id: Int): ChipModel?
     fun delete(item: Profile)
     fun update(item: Profile)
-    fun insertChip(item: ChipModel): Long
+    fun insertChip(item: ChipModel)
     fun insertProfile(item: Profile)
 }

@@ -33,7 +33,6 @@ fun ProfileDetailScreen(
 ) {
 //    viewModel.findProfileById(n)
     val stat by viewModel.stat.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     if (stat.isLoading) {
         Log.d("TAG", "ProfileListScreen: ${stat.isLoading}")

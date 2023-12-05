@@ -1,12 +1,12 @@
 package com.chips.divisive.ds
 
+import android.util.Log
 import com.chips.divisive.db.ProfilesDAO
 import com.chips.divisive.model.ChipModel
 import com.chips.divisive.model.Profile
 import com.chips.divisive.model.ProfileWithItsChips
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,12 +37,14 @@ class ProfileLocalDataSource @Inject constructor(private val profilesDAO: Profil
 //        profilesDAO.insert(item.chips)
     }
 
-    override fun insertChip(item: ChipModel): Long {
+    override fun insertChip(item: ChipModel) {
 
-      /*  CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch{
             profilesDAO.insertChip(item)
-        }*/
-        return profilesDAO.insertChip(item)
+        }
+      /*  val i =profilesDAO.insertChip(item)
+        Log.d("TAG", "insertChip: $i")
+        return i*/
 
 //        profilesDAO.insert(item.chips)
     }

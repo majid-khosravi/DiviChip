@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                             val chipId = backStackEntry.arguments?.getInt("chipId")
                             val profileId = backStackEntry.arguments?.getInt("profileId")
 
-                            BottomSheet(hiltViewModel(), chipId, profileId) {
+                            BottomSheet(hiltViewModel()) {
                                 showSheet = false
                             }
                         }

@@ -1,5 +1,6 @@
 package com.chips.divisive.model
 
+import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -7,8 +8,9 @@ import androidx.room.PrimaryKey
 data class ChipModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val value: String,
-    val count: Int,
-    val profileId: Int,
-    val color: Long
+    var value: String = "",
+    var count: Int = 0,
+    var profileId: Int,
+    var color: Long = Color.Gray.value.toLong(),
+    var textColor: Long = Color.Black.value.toLong(),
 )
