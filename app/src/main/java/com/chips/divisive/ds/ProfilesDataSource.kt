@@ -3,16 +3,16 @@ package com.chips.divisive.ds
 import com.chips.divisive.model.ChipModel
 import com.chips.divisive.model.Profile
 import com.chips.divisive.model.ProfileWithItsChips
-import kotlinx.coroutines.flow.Flow
 
 interface ProfilesDataSource {
 
-    fun findAll(): List<ProfileWithItsChips>
+    suspend fun findAll(): List<ProfileWithItsChips>
 
-    fun findById(id: Int): ProfileWithItsChips?
-    fun findChipById(id: Int): ChipModel?
-    fun delete(item: Profile)
-    fun update(item: Profile)
-    fun insertChip(item: ChipModel)
-    fun insertProfile(item: Profile)
+    suspend fun findById(id: Int): ProfileWithItsChips?
+    suspend fun findChipById(id: Int): ChipModel?
+    suspend fun delete(item: Profile)
+    suspend fun update(item: Profile)
+    suspend fun updateChip(item: ChipModel)
+    suspend fun insertChip(item: ChipModel)
+    suspend fun insertProfile(item: Profile)
 }

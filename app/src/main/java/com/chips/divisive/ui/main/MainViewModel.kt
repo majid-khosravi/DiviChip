@@ -1,9 +1,11 @@
 package com.chips.divisive.ui.main
 
+import android.util.Log
 import androidx.compose.animation.VectorConverter
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chips.divisive.model.ChipMakerState
 import com.chips.divisive.model.ChipModel
 import com.chips.divisive.model.Profile
 import com.chips.divisive.model.ProfileListState
@@ -40,12 +42,39 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            extracted(1)
-            extracted(2)
-            extracted(3)
+//            extracted(1)
+//            extracted(2)
+//            extracted(3)
 
             delay(500)
             findAll()
+        }
+    }
+
+
+    init {
+        findChipById(10)
+    }
+
+/*    fun findChipById(id: Int) = viewModelScope.launch {
+        repo.findChipById(id)
+            .onStart { _state.update { state -> state.copy(isLoading = true) } }
+            .onCompletion { _state.update { state -> state.copy(isLoading = false) } }
+            .onEach {
+                it?.let {
+                    Log.e("TAG", "msfindChipById: $it", )
+//                    _state.update { state -> state.copy(value = it) }
+                }
+            }
+
+    }*/
+
+
+    fun findChipById(id: Int) {
+        viewModelScope.launch {
+            repo.findChipById(id).collect {
+                Log.e("TAG", "msfindChipById: $it", )
+            }
         }
     }
 

@@ -12,10 +12,11 @@ interface ProfileRepository {
 
     fun findChipById(id: Int): Flow<ChipModel?>
 
-    fun insertProfile(item: Profile)
-    fun insertChip(item: ChipModel)
+    fun insertProfile(item: Profile): Flow<Unit>
+    fun insertChip(item: ChipModel): Flow<Unit>
 
-    fun update(item: Profile)
+    fun update(item: Profile): Flow<Unit>
+    fun updateChip(item: ChipModel): Flow<Unit>
 
-    fun delete(item: Profile)
+    fun delete(item: Profile): Flow<Unit>
 }

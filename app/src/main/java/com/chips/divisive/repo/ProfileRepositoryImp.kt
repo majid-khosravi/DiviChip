@@ -31,19 +31,39 @@ class ProfileRepositoryImp @Inject constructor(private val dataSource: ProfileLo
         }
     }
 
-    override fun insertProfile(item: Profile) {
-        return dataSource.insertProfile(item)
+    override fun insertProfile(item: Profile): Flow<Unit> {
+//        return dataSource.insertProfile(item)
+        return flow {
+            emit(dataSource.insertProfile(item))
+        }
     }
 
-    override fun insertChip(item: ChipModel) {
-         dataSource.insertChip(item)
+    override fun insertChip(item: ChipModel): Flow<Unit> {
+//        dataSource.insertChip(item)
+        return flow {
+            emit(dataSource.insertChip(item))
+        }
     }
 
-    override fun update(item: Profile) {
-        return dataSource.update(item)
+    override fun update(item: Profile): Flow<Unit> {
+//        return dataSource.update(item)
+        return flow {
+            emit(dataSource.update(item))
+        }
     }
 
-    override fun delete(item: Profile) {
-        return dataSource.delete(item)
+
+    override fun updateChip(item: ChipModel): Flow<Unit> {
+//        return dataSource.update(item)
+        return flow {
+            emit(dataSource.updateChip(item))
+        }
+    }
+
+    override fun delete(item: Profile): Flow<Unit> {
+//        return dataSource.delete(item)
+        return flow {
+            emit(dataSource.delete(item))
+        }
     }
 }

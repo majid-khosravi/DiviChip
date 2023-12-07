@@ -10,7 +10,6 @@ import androidx.room.Update
 import com.chips.divisive.model.ChipModel
 import com.chips.divisive.model.Profile
 import com.chips.divisive.model.ProfileWithItsChips
-import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -41,6 +40,10 @@ interface ProfilesDAO {
 
     @Update
     fun update(item: Profile)
+
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateChip(item: ChipModel): Long
 
     @Delete
     fun delete(item: Profile)

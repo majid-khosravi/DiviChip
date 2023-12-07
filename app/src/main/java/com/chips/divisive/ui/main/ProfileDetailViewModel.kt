@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repo: ProfileRepository
+    private val repo: ProfileRepository,
 ) : ViewModel() {
 
     private val profileId: Int =
@@ -30,7 +30,7 @@ class ProfileDetailViewModel @Inject constructor(
     val stat = _state.asStateFlow()
 
     init {
-        findProfileById(profileId)
+        findProfileById2(profileId)
     }
 
     fun findProfileById(id: Int) = viewModelScope.launch {
@@ -39,6 +39,14 @@ class ProfileDetailViewModel @Inject constructor(
             .onEach {
                 _state.update { state -> state.copy(value = it) }
             }.collect()
+    }
+
+    fun findProfileById2(id: Int) {
+        viewModelScope.launch {
+            repo.findById(id).collect {
+                _state.value = ProfilesDetailState(value = it, isLoading = false)
+            }
+        }
     }
 
 }

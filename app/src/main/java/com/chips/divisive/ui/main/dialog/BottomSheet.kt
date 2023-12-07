@@ -1,6 +1,5 @@
 package com.chips.divisive.ui.main.dialog
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,13 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chips.divisive.model.ChipModel
 import com.chips.divisive.ui.detail.HueBar
 import com.chips.divisive.ui.home.CircleShape
-import com.chips.divisive.ui.main.MyToast
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,9 +48,7 @@ fun BottomSheet(viewModel: ChipViewModel, onDismiss: () -> Unit) {
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
-        ChipMaker(viewModel) {
-            onDismiss()
-        }
+        ChipMaker(viewModel)
     }
 
 
@@ -59,11 +56,23 @@ fun BottomSheet(viewModel: ChipViewModel, onDismiss: () -> Unit) {
 
 
 @Composable
-fun ChipMaker(viewModel: ChipViewModel, onDismiss: () -> Unit) {
+fun ChipMaker(viewModel: ChipViewModel) {
     var isClicked by remember { mutableStateOf(false) }
 
 //    val state = viewModel.state.collectAsState()
-    val stat by viewModel.state.collectAsStateWithLifecycle()
+//    val stat = viewModel.state.collectAsStateWithLifecycle()
+//    val chipState by viewModel.chipState.collectAsState()
+//    val uiState by viewModel.registerState.collectAsState()
+
+
+
+    val uiState by viewModel.state.collectAsState()
+
+
+    /* val uiState = remember {
+         st
+     }*/
+
 
     val context = LocalContext.current
 
@@ -84,147 +93,215 @@ fun ChipMaker(viewModel: ChipViewModel, onDismiss: () -> Unit) {
 
 
     if (isClicked) {
-        viewModel.insertChip(stat.value)
+        uiState.value?.let { viewModel.insertChip(it) }
     }
 
+    uiState.value?.let {
+        Chipper(
+            it,
+            onValueChanged = { viewModel.updateValue(it) },
+            onCountChanged = { viewModel.updateCount(it) },
+            onColorChanged = { viewModel.updateColor(it) },
+            onTextColorChanged = { viewModel.updateTextColor(it) },
+            onButtonClicked = { viewModel.insertChip(it) }
+        )
+    }
 
-    if (stat.isLoading) {
-        Log.d("TAG", "isLoading: ${stat.isLoading}")
-    } else if (stat.isSuccess) {
-        MyToast(context, "Your chip is added to profile!")
-        onDismiss()
-    } else
+    /* if (chipState.isLoading) {
+         Log.d("TAG", "isLoading: ${chipState.isLoading}")
+     } else if (chipState.isSuccess) {
+         MyToast(context, "Your chip is added to profile!")
+         onDismiss()
+     }else{
+         Chipper(chipState.value, viewModel)
+     }*/
 
-
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-        ) {
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = "You can add or edit chips", style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Row(
-                modifier = Modifier.padding(8.dp),
-                Arrangement.Center,
-                Alignment.CenterVertically
-            ) {
-
-                CircleShape(
-                    color = Color(stat.value.color),
-                    textColor = Color(stat.value.textColor),
-                    shapeSize = 100.dp,
-                    fontSize = 25.sp,
-                    text = stat.value.value
-                )
-                Input(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(0.5f, false)
-                        .size(100.dp),
-                    label = "Value"
-                ) {
-                    stat.value.value = it
-                }
-                Input(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(0.5f, false)
-                        .size(100.dp),
-                    label = "Count"
-                ) {
-                    try {
-                        stat.value.count = it.toInt()
-                    } catch (e: Exception) {
-                        stat.value.count = 0
-                    }
-                }
-            }
-            Row(
-                modifier = Modifier.padding(8.dp),
-                Arrangement.Center,
-                Alignment.CenterVertically
-            ) {
-                HueBar { hue ->
-                    stat.value.color =
-                        Color.hsv(hue = hue, saturation = 0.9f, value = 0.7f).value.toLong()
-                }
-            }
-            Row(
-                modifier = Modifier.padding(8.dp),
-                Arrangement.Center,
-                Alignment.CenterVertically
-            ) {
-                Text(text = "Font Color:")
-
-                Canvas(modifier = Modifier
-                    .padding(16.dp)
-                    .size(48.dp)
-                    .border(1.dp, Color.Magenta)
-                    .clickable {
-                        stat.value.textColor = Color.White.value.toLong()
-                    }, onDraw = {
-                    drawRect(Color.White)
-                })
-
-                Canvas(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .border(1.dp, Color.Magenta)
-                        .clickable {
-                            stat.value.textColor = Color.Black.value.toLong()
-                        },
-                    onDraw = {
-                        drawRect(Color.Black)
-                    })
-
-                /*  Canvas(
-                      modifier = Modifier
-                          .size(size = 48.dp)
-                          .border(width = 2.dp, color = Color.Magenta)
-                  ) {
-                      drawRect(
-                          brush = Brush.horizontalGradient(listOf(Color.Magenta, Color.Yellow)),
-                          size = Size(width = 48.dp.toPx(), height = 48.dp.toPx()),
-                          topLeft = Offset(x = 48.dp.toPx(), y = 48.dp.toPx()),
-                          style = Stroke(width = 6.dp.toPx())
-                      )
-                  }
-      */
-            }
-            Row(
-                modifier = Modifier.padding(8.dp),
-                Arrangement.Center,
-                Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = {
-                        isClicked = true
-                    }
-                ) {
-                    Text(text = "Save it")
-                }
-            }
-        }
+//    stat.value
 
 
 }
 
 
+@Preview
+@Composable
+fun prevChipper() {
+    Chipper(
+        ChipModel(1, 2, "250", 14),
+        onValueChanged = { },
+        onCountChanged = { },
+        onColorChanged = { },
+        onTextColorChanged = { },
+        onButtonClicked = { }
+    )
+}
+
+@Composable
+fun Chipper(
+    chip: ChipModel,
+    onValueChanged: (value: String) -> Unit,
+    onCountChanged: (count: Int) -> Unit,
+    onColorChanged: (color: Color) -> Unit,
+    onTextColorChanged: (color: Color) -> Unit,
+    onButtonClicked: () -> Unit,
+) {
+
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+    ) {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            text = "You can add or edit chips", style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
+        Row(
+            modifier = Modifier.padding(8.dp),
+            Arrangement.Center,
+            Alignment.CenterVertically
+        ) {
+
+            CircleShape(
+                color = Color(chip.color.toULong()),
+                textColor = Color(chip.textColor.toULong()),
+                shapeSize = 100.dp,
+                fontSize = 25.sp,
+                text = chip.value
+            )
+
+            /*  CircleShape(
+                  color = Color.Magenta,
+                  textColor = Color.Black,
+                  shapeSize = 100.dp,
+                  fontSize = 25.sp,
+                  text = chip.value
+              )*/
+            Input(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(0.5f, false)
+                    .size(70.dp),
+                label = "Value",
+                value = chip.value
+            ) {
+                onValueChanged(it)
+//                viewModel.updateValue(it)
+//                    stat.value.value = it
+            }
+            Input(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .weight(0.5f, false)
+                    .size(70.dp),
+                label = "Count",
+                value = chip.count.toString()
+            ) {
+                var newCountInt = 0
+                try {
+                    newCountInt = it.toInt()
+                } catch (e: Exception) {
+                    newCountInt = 0
+                }
+                onCountChanged(newCountInt)
+//                viewModel.updateCount(it)
+
+                /*   try {
+                       stat.value.count = it.toInt()
+                   } catch (e: Exception) {
+                       stat.value.count = 0
+                   }*/
+            }
+        }
+        Row(
+            modifier = Modifier.padding(8.dp),
+            Arrangement.Center,
+            Alignment.CenterVertically
+        ) {
+            HueBar { hue ->
+//                viewModel.updateColor(Color.hsv(hue = hue, saturation = 0.9f, value = 0.7f))
+                onColorChanged(Color.hsv(hue = hue, saturation = 0.9f, value = 0.7f))
+                /*
+                                    stat.value.color =
+                                        Color.hsv(hue = hue, saturation = 0.9f, value = 0.7f).value.toLong()*/
+            }
+        }
+        Row(
+            modifier = Modifier.padding(8.dp),
+            Arrangement.Center,
+            Alignment.CenterVertically
+        ) {
+            Text(text = "Font Color:")
+
+            Canvas(modifier = Modifier
+                .padding(16.dp)
+                .size(48.dp)
+                .border(1.dp, Color.Magenta)
+                .clickable {
+                    onTextColorChanged(Color.White)
+//                    viewModel.updateTextColor(Color.White)
+//                        stat.value.textColor = Color.White.value.toLong()
+                }, onDraw = {
+                drawRect(Color.White)
+            })
+
+            Canvas(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(48.dp)
+                    .border(1.dp, Color.Magenta)
+                    .clickable {
+                        onTextColorChanged(Color.Black)
+//                        viewModel.updateTextColor(Color.Black)
+//                            stat.value.textColor = Color.Black.value.toLong()
+                    },
+                onDraw = {
+                    drawRect(Color.Black)
+                })
+
+            /*  Canvas(
+                  modifier = Modifier
+                      .size(size = 48.dp)
+                      .border(width = 2.dp, color = Color.Magenta)
+              ) {
+                  drawRect(
+                      brush = Brush.horizontalGradient(listOf(Color.Magenta, Color.Yellow)),
+                      size = Size(width = 48.dp.toPx(), height = 48.dp.toPx()),
+                      topLeft = Offset(x = 48.dp.toPx(), y = 48.dp.toPx()),
+                      style = Stroke(width = 6.dp.toPx())
+                  )
+              }
+  */
+        }
+        Row(
+            modifier = Modifier.padding(8.dp),
+            Arrangement.Center,
+            Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+//                        isClicked = true
+//                    viewModel.insertChip(chip)
+                    onButtonClicked()
+                }
+            ) {
+                Text(text = "Save it")
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Input(modifier: Modifier = Modifier, label: String, callback: (String) -> Unit) {
+fun Input(modifier: Modifier = Modifier, label: String, value: String, callback: (String) -> Unit) {
 
-    val text = remember { mutableStateOf("1") }
+//    val text = remember { mutableStateOf("1") }
     Column {
         TextField(
             modifier = modifier,
-            value = text.value,
+            value = value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             textStyle = TextStyle(
@@ -232,10 +309,8 @@ fun Input(modifier: Modifier = Modifier, label: String, callback: (String) -> Un
             ),
             maxLines = 1,
             onValueChange = { newText ->
-                text.value = newText
-
-                if (text.value.isNotEmpty())
-                    callback(text.value)
+                if (newText.isNotEmpty())
+                    callback(newText)
             },
             label = { Text(label) }
         )
