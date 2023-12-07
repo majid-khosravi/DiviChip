@@ -20,17 +20,17 @@ class ChipViewModel @Inject constructor(
     private val repo: ProfileRepository,
 ) : ViewModel() {
 
-    private val chipId: Int = 7
+//    private val chipId: Int = 7
 
-    private val profileId: Int = 2
+//    private val profileId: Int = 2
 
-    /*
+
 
     private val chipId: Int =
         savedStateHandle["chipId"] ?: throw IllegalStateException("chipId is required")
 
     private val profileId: Int =
-        savedStateHandle["profileId"] ?: throw IllegalStateException("profileId is required")*/
+        savedStateHandle["profileId"] ?: throw IllegalStateException("profileId is required")
 
     /*  private val _state: MutableStateFlow<ChipMakerState> = MutableStateFlow(ChipMakerState())
       val state = _state*/

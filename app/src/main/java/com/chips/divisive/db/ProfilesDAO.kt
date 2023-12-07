@@ -43,7 +43,7 @@ interface ProfilesDAO {
 
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateChip(item: ChipModel): Long
+    fun updateChip(item: ChipModel): Int
 
     @Delete
     fun delete(item: Profile)
